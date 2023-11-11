@@ -1,0 +1,156 @@
+/* pages/timeTable/timeTable.wxss */
+page {
+  background-color: #fff;
+}
+.refresh-btn{
+  width: 52rpx;
+  height: 52rpx;
+}
+.week-list{
+  position: fixed;
+  height: 92rpx;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background: #f5f7f8;
+  z-index: 10;
+}
+.now-month{
+  width: 80rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 24rpx;
+  font-weight: normal;
+  letter-spacing: 0em;
+  color: #666666;
+  text-align: center;
+}
+
+.week-item{
+  width: calc((100% - 80rpx) / 7);
+  height: 100%; /*子元素的高度将等于父元素的高度*/
+  display: flex;
+}
+.week-name-notify{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;/*这个属性用于垂直对齐，它将 flex 容器内的所有子元素垂直居中对齐*/
+  justify-content: center; /**这个属性用于水平对齐，它将 flex 容器内的所有子元素水平居中对齐*/
+  background: #bbbbbb;
+}
+
+.week-name-normal{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;/*这个属性用于垂直对齐，它将 flex 容器内的所有子元素垂直居中对齐*/
+  justify-content: center;/**这个属性用于水平对齐，它将 flex 容器内的所有子元素水平居中对齐*/
+}
+
+.week-name{
+  font-size: 24rpx;
+  font-weight: bolder;
+  color: #444444;
+}
+.week-data{
+  font-size: 22rpx;
+  color: #999999;
+}
+
+.table-content{
+  width: 100%;
+  padding-top: 92rpx;
+  display: flex;
+}
+.table-times-section{
+  width: 80rpx;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  background: #F5F6F7;
+
+}
+.section-nums{
+  height: 120rpx;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.seq-nums{
+  font-size: 24rpx;
+  font-weight: bolder;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+
+.time-text{
+  font-size: 23rpx;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  text-align: center;
+}
+/* 时间表内容布局 */
+.work_list{
+  width: calc(100% - 80rpx);
+  height: 100%;
+  position: relative;
+}
+
+.work_item{
+  position: absolute;
+  width: calc(100% / 7);
+  padding: 3rpx;
+}
+
+.work_item_content{
+  width: 100%;
+  height: 100%;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+  color: #ffffff;
+  text-align: center;
+}
+.done_status{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.work_item_content image{
+  position: absolute;
+  bottom: 12rpx;
+  left: 50%;
+  height: 36rpx;
+  width: 36rpx;
+  /* scale: 80%; */
+  transform: translateX(-50%) ;/*将元素在水平方向上向左平移 50% 的自身宽度*/
+}
+
+/* index.wxss */
+.dialog {
+  position: fixed;
+  width: 80%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20rpx;
+  box-shadow: 0 2rpx 5rpx rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  /* 其他样式属性根据需要添加 */
+}
+
+.form_btn{
+  display: flex;
+  /* align-content: center; */
+  justify-content: space-around;
+}

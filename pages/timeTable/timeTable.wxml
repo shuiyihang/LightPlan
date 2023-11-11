@@ -1,0 +1,117 @@
+<!--pages/timeTable/timeTable.wxml-->
+<cu-custom bgColor="bg-white" isInsert="{{true}}">
+  <view slot="backText">
+    <image bindtap="showAddDialog" class="refresh-btn" src="/asset/imgs/insert.png" mode="aspectFill"></image>
+  </view>
+  <!-- <view slot="content">
+    <text>第1周</text> <text class="cuIcon-unfold"></text>
+  </view> -->
+</cu-custom>
+<view class="container">
+  <view class="week-list">
+    <view class="now-month">
+      <text>{{currentMonth}}</text>
+      <text>月</text>
+    </view>
+    <view class="week-item" wx:for="{{7}}">
+      <view wx:if="{{(index + 1) % 7  == currentWeekDay}}" class="week-name-notify">
+        <text class="week-name">周{{weekText[index]}}</text>
+        <text class="week-data">{{dayList[index]}}日</text>
+      </view>
+      <view wx:else class="week-name-normal">
+        <text class="week-name">周{{weekText[index]}}</text>
+        <text class="week-data">{{dayList[index]}}日</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="table-content">
+    <view class="table-times-section">
+      <wxs src="./timeTable.wxs" module="tools"/>
+      <view class="section-nums" wx:for="{{12}}">
+        <view class="seq-nums">
+          <text>{{index + 1}}</text>
+        </view>
+        <view class="time-text">
+          <text>{{tools.getTimesTable(index,0)}}</text>
+          <text>{{tools.getTimesTable(index,1)}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="work_list">
+    <!-- 给work_item一个内边距 -->
+      <view class="work_item" wx:for="{{workList}}" wx:key="key" style="height: {{item.duration * 120}}rpx;top: {{(item.section - 1)*120}}rpx;left:{{(item.week - 1) * ((windowWidth - 80 * (windowWidth / 750)) / 7)}}px;">
+        <view class="work_item_content" style="background-color:{{colorList[(item.week + item.section + item.duration) % 9]}};" data-recordid="{{item.abstract}}" bind:longpress="deleteView" bind:tap="seeDetails">
+          <view class="done_status">
+            <view>{{item.abstract}}</view>
+            <image wx:if="{{item.done}}" src="/asset/imgs/done.png" mode="aspectFill"/>
+            <image wx:else src="/asset/imgs/undone.png" mode="aspectFill"/>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+
+  <view>
+    <!-- 弹出窗口 -->
+    <view class="dialog" wx:if="{{ showDialog }}">
+      <!-- 表单内容 -->
+      <form bindsubmit="submitForm">
+        <view class="cu-form-group">
+          <view class="title">事务摘要</view>
+          <input placeholder="小小的描述" maxlength="30" bindblur="abstractFillIn"></input>
+        </view>
+
+        <view class="cu-form-group">
+          <view class="title">时间选择</view>
+          <picker mode="multiSelector" bindchange="MultiChange" value="{{multiIndex}}"
+          range="{{multiArray}}">
+            <view class="picker">
+              {{multiArray[0][multiIndex[0]] || '周数'}}，{{multiArray[1][multiIndex[1]] || '选段'}}，{{multiArray[2][multiIndex[2]] || '持续长度'}}
+            </view>
+          </picker>
+        </view>
+        <view class="cu-form-group margin-top">
+          <textarea maxlength="-1" disabled="{{modalName!=null}}" bindinput="textareaAInput" placeholder="在这里填写详细的备注吧"></textarea>
+        </view>
+  
+      </form>
+      <view class="form_btn">
+        <button class="cu-btn bg-red lg" bindtap="hideAddDialog">关闭</button>
+        <button class="cu-btn bg-green lg" bind:tap="submiteDialog">提交</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 点击view显示这个任务的详情，完成选项 -->
+  <view>
+    <view class="infoPage" wx:if="{{showWorkInfo}}">
+      <view class="solids-bottom padding-xs flex align-center">
+        <view class="flex-sub text-center">
+          <view class="solid-bottom text-lg padding">
+            <text class="text-black">详情</text>
+          </view>
+          <view class="padding">页面小标题，首要层级显示内容</view>
+        </view>
+      </view>
+
+      <checkbox-group bindchange="checkboxChange">
+        <view class="cu-form-group">
+          <view class="title">任务完成</view>
+          <checkbox class="round blue" checked ></checkbox>
+        </view>
+      </checkbox-group>
+    </view>
+  </view>
+
+</view>
+
+
+<!--       {
+        abstract:'分布式大作业',
+        week:2,
+        section:1,
+        duration:3,
+        color:'#fbbd08'
+      }, -->

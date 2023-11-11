@@ -1,0 +1,48 @@
+<!--pages/login/login.wxml-->
+<cu-custom bgColor="bg-white" isBack="{{true}}">
+  <!-- <view slot="content">登录</view> -->
+</cu-custom>
+<view class="container">
+
+  <view class="header">
+    <image src="/asset/imgs/logo.png" mode="aspectFill"></image>
+  </view>
+  <view class="login">
+  <!-- model:value类似vue的双向绑定 -->
+    <view class="form-item">
+      <image src="/asset/imgs/user.png" mode="aspectFill"></image>
+      <input type="text" model:value='{{userName}}' placeholder="用户名"/>
+    </view>
+    <view class="form-item">
+      <image src="/asset/imgs/password.png" mode="aspectFill"></image>
+      <input type="text" password="true" model:value='{{passWord}}' placeholder="密码"/>
+    </view>
+    
+    <view bind:tap="switchStatus" class="checkbox-item">
+      <checkbox checked="{{saveCount}}" class="theme"></checkbox>
+      <text>记住账号密码(仅本地存储)</text>
+    </view>
+    <button class="cu-btn" bind:tap="login">登录</button>
+  </view>
+  <view class="sign_in">
+    <view bindtap='signin'>还没有账号?点我注册</view>
+  </view>
+
+  <view class="dialog" wx:if="{{ showDialog }}">
+    <!-- 表单内容 -->
+    <form bindsubmit="submitForm">
+      <view class="cu-form-group">
+        <view class="title">账号</view>
+        <input placeholder="你的名字" maxlength="30" bindblur="userNameFillIn"></input>
+      </view>
+      <view class="cu-form-group">
+        <view class="title">密码</view>
+        <input maxlength="30" bindblur="passWordFillIn"></input>
+      </view>
+    </form>
+    <view class="form_btn">
+      <button class="cu-btn bg-red lg" bindtap="hideAddDialog">关闭</button>
+      <button class="cu-btn bg-green lg" bind:tap="submiteDialog">确定</button>
+    </view>
+  </view>
+</view>
