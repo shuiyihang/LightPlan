@@ -18,10 +18,10 @@
       <input type="text" password="true" model:value='{{passWord}}' placeholder="密码"/>
     </view>
     
-    <view bind:tap="switchStatus" class="checkbox-item">
+    <!-- <view bind:tap="switchStatus" class="checkbox-item">
       <checkbox checked="{{saveCount}}" class="theme"></checkbox>
       <text>记住账号密码(仅本地存储)</text>
-    </view>
+    </view> -->
     <button class="cu-btn" bind:tap="login">登录</button>
   </view>
   <view class="sign_in">

@@ -60,7 +60,7 @@ Page({
           wx.showToast({
             title: '登录成功',
           })
-          getApp().globalData.workList = res.data[0].tasks.slice()
+          getApp().globalData.workList = res.data[0].tasks
           getApp().globalData.serch_id = res.data[0]._id
           setTimeout(()=>{
             wx.redirectTo({

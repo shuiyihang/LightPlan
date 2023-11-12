@@ -2,6 +2,9 @@
 page {
   background-color: #fff;
 }
+.container{
+  
+}
 .refresh-btn{
   width: 52rpx;
   height: 52rpx;
@@ -63,6 +66,7 @@ page {
   width: 100%;
   padding-top: 92rpx;
   display: flex;
+  /* bottom: 92rpx; */
 }
 .table-times-section{
   width: 80rpx;
@@ -136,13 +140,13 @@ page {
 }
 
 /* index.wxss */
-.dialog {
+.dialog,.infoPage{
   position: fixed;
   width: 80%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #fff;
+  background-color: #d7f0db;
   padding: 20rpx;
   box-shadow: 0 2rpx 5rpx rgba(0, 0, 0, 0.1);
   z-index: 999;
@@ -152,5 +156,6 @@ page {
 .form_btn{
   display: flex;
   /* align-content: center; */
+  margin-top: 20rpx;
   justify-content: space-around;
 }

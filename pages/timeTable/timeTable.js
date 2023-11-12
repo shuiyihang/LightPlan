@@ -5,15 +5,15 @@ Page({
     showWorkInfo:false,
     weekText:['一','二','三','四','五','六','日'],
     colorList:[
-      '#e54d42',
-      '#f37b1d',
-      '#fbbd08',
-      '#8dc63f',
-      '#39b54a',
-      '#0081ff',
-      '#6739b6',
-      '#e03997',
-      '#333333'
+      '#f37b1d',// 橘黄
+      '#fbbd08',// 黄色
+      '#8dc63f',// 浅绿
+      '#0081ff',// 蓝色
+      '#6739b6',// 紫色
+      '#e03997',// 粉红
+      '#1cbbb4',// 青色
+      '#8799a3',// 灰色
+      '#333333'// 黑色
     ],
     multiArray: [
       ['周一', '周二','周三','周四','周五','周六','周日'],
@@ -26,11 +26,22 @@ Page({
       week:1,
       section:1,
       duration:1,
-      info:''
+      info:'',
+      done:false
     },
+    // 点开显示的workItem,是否进行了操作
+    has_change:false,
+    showWorkItem:{},
     workList:[],
-    dayList:[0,0,0,0,0,0,0]
+    dayList:[0,0,0,0,0,0,0],
   },
+
+  /*TODO */
+  // 封装数据库读
+
+
+
+  // 封装数据库写字段
 
   showAddDialog() {
     this.setData({
@@ -135,78 +146,51 @@ Page({
   },
 
   deleteView(e){
-    const that = this
     const recordId = e.currentTarget.dataset.recordid;
-    console.log('记录的id',recordId)
-    const db = wx.cloud.database({
-      env:'cloud1-0g6xxe0n76b03f4b'
-    })
-    db.collection('todos').doc(getApp().globalData.serch_id).update({
-      data:{
-        tasks:db.command.pull({
-          abstract:db.command.eq(recordId)
-        })
-      }
-    })
-
-
-    db.collection('todos').doc(getApp().globalData.serch_id)
-    .get()
-    .then(res=>{
-      console.log('res:',res,res.data.tasks)
-      if(res.data.length == 0){
-        getApp().globalData.workList = []
-      }else{
-        getApp().globalData.workList = res.data.tasks.slice()
-      }
-      console.log('全局list',getApp().globalData.workList)
-      that.setData({
-        workList:getApp().globalData.workList
-      })
-      console.log('现在的worklist',that.data.workList)
-    })
-  },
-
-  seeDetails(e){
-    const recordId = e.currentTarget.dataset.recordid;
-    // 点击查看细节
-    const db = wx.cloud.database({
-      env:'cloud1-0g6xxe0n76b03f4b'
-    })
-
-    db.collection('todos').doc(getApp().globalData.serch_id)
-    .get()
-    .then(res=>{
-      console.log('res:',res,res.data.tasks)
-      if(res.data.length == 0){
-        getApp().globalData.workList = []
-      }else{
-        getApp().globalData.workList = res.data.tasks.slice()
-      }
-      for(let i = 0;i < res.data.tasks.length;i++){
-        if(res.data.tasks[i].abstract === recordId){
-          wx.showModal({
-            title: '详情',
-            content: res.data.tasks[i].info || '空空如也~',
-            showCancel:false,
-            complete: (res) => {
-              if (res.cancel) {
-                
-              }
-          
-              if (res.confirm) {
-                
-              }
-            }
-          })
-          return
-        }
-      }
- 
-    })
+    let currentData = this.data.workList
+    currentData = currentData.filter(item => item.abstract !== recordId);// 返回true表示保留在新数组里
+    console.log('workLis',currentData)
+    console.log('global',getApp().globalData.workList)
 
     this.setData({
-      showWorkInfo:true
+      workList:currentData
+    })
+
+  },
+
+  // 点击查看细节
+  seeDetails(e){
+    const currentData = this.data.workList
+    const recordId = e.currentTarget.dataset.recordid;
+    console.log('测试2',currentData)
+    for(let i = 0;i < currentData.length;i++){
+      if(currentData[i].abstract === recordId){
+        this.setData({
+          showWorkInfo:true,
+          showWorkItem:currentData[i]
+        })
+        return
+      }
+    }
+  },
+
+  hideWorkInfo(){
+    const currentData = this.data.showWorkItem
+    const foo_list = this.data.workList
+    console.log('测试1',currentData)
+    // 如果item有数据变化就写回数据库
+    if(this.data.has_change){
+      for(let i = 0;i < foo_list.length;i++){
+        if(foo_list[i].abstract == currentData.abstract){
+          foo_list[i].done = currentData.done
+          break
+        }
+      }
+    }
+    this.setData({
+      has_change:false,
+      showWorkInfo:false,
+      workList:foo_list
     })
   },
   /**
@@ -241,9 +225,23 @@ Page({
       }
     })
 
+    this.setData({
+      workList:getApp().globalData.workList
+    })
+
   },
   checkboxChange(e){
+    const currentData = this.data.showWorkItem
     console.log("检查盒子",e.detail.value)
+    if(e.detail.value.length){
+      currentData.done = true
+    }else{
+      currentData.done = false
+    }
+    this.setData({
+      has_change:true,
+      showWorkItem:currentData
+    })
   },
 
 
@@ -259,23 +257,33 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-    this.setData({
-      workList:getApp().globalData.workList
-    })
+
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide() {
-
+    const db = wx.cloud.database({
+      env:'cloud1-0g6xxe0n76b03f4b'
+    })
+    const that = this
+    // 结束时，写回数据库
+    db.collection('todos').doc(getApp().globalData.serch_id).update({
+      data:{
+        tasks:that.data.workList
+      },
+      success:function(res){
+        console.log('成功了',res)
+      }
+    })
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload() {
-
+  
   },
 
   /**
