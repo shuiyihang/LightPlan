@@ -25,7 +25,7 @@
     </view>
   </view>
 
-  <scroll-view class="table-content">
+  <view class="table-content">
     <view class="table-times-section">
       <wxs src="./timeTable.wxs" module="tools"/>
       <view class="section-nums" wx:for="{{12}}">
@@ -50,7 +50,7 @@
         </view>
       </view>
     </view>
-  </scroll-view>
+  </view>
   
 
 
@@ -60,16 +60,16 @@
       <!-- 表单内容 -->
       <form bindsubmit="submitForm">
         <view class="cu-form-group">
-          <view class="title">事务摘要</view>
+          <view class="title">摘要</view>
           <input placeholder="小小的描述" maxlength="30" bindblur="abstractFillIn"></input>
         </view>
 
         <view class="cu-form-group">
-          <view class="title">时间选择</view>
+          <view class="title">时间</view>
           <picker mode="multiSelector" bindchange="MultiChange" value="{{multiIndex}}"
           range="{{multiArray}}">
             <view class="picker">
-              {{multiArray[0][multiIndex[0]] || '周数'}}，{{multiArray[1][multiIndex[1]] || '选段'}}，{{multiArray[2][multiIndex[2]] || '持续长度'}}
+              {{multiArray[0][multiIndex[0]]}}，段{{multiArray[1][multiIndex[1]]}}，时长{{multiArray[2][multiIndex[2]]}}
             </view>
           </picker>
         </view>
@@ -80,7 +80,7 @@
       </form>
       <view class="form_btn">
         <button class="cu-btn bg-red lg" bindtap="hideAddDialog">关闭</button>
-        <button class="cu-btn bg-green lg" bind:tap="submiteDialog">提交</button>
+        <button class="cu-btn bg-green lg" bind:tap="submiteDialog">完成</button>
       </view>
     </view>
   </view>
