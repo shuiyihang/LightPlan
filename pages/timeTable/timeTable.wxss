@@ -67,6 +67,7 @@ page {
   padding-top: 92rpx;
   display: flex;
   /* bottom: 92rpx; */
+  /* padding-bottom: 92rpx; */
 }
 .table-times-section{
   width: 80rpx;
@@ -150,6 +151,7 @@ page {
   padding: 20rpx;
   box-shadow: 0 2rpx 5rpx rgba(0, 0, 0, 0.1);
   z-index: 999;
+  border-radius: 8rpx;
   /* 其他样式属性根据需要添加 */
 }
 
